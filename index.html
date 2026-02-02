@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free QR Code Generator - Create QR Codes Instantly</title>
+  <meta name="description" content="Free online QR code generator. Create QR codes for URLs, text, WiFi, and more. No signup required.">
+  <meta name="keywords" content="QR code, generator, free, online, URL, text, WiFi">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8581458440606037" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { text-align: center; margin: 30px 0; font-size: 2.5rem; }
+    .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+    .input-section { background: #16213e; padding: 30px; border-radius: 12px; margin-bottom: 20px; }
+    input, select { width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 8px; font-size: 1rem; background: #1a1a2e; color: #fff; }
+    button { width: 100%; padding: 15px; background: #e94560; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #ff6b6b; }
+    .qr-output { text-align: center; padding: 30px; background: #16213e; border-radius: 12px; margin: 20px 0; }
+    #qrcode { display: inline-block; background: white; padding: 20px; border-radius: 8px; }
+    .download-btn { background: #0f3460; margin-top: 20px; }
+    .ad-space { background: #16213e; border: 1px dashed #333; padding: 20px; text-align: center; color: #666; margin: 20px 0; border-radius: 8px; min-height: 100px; }
+    footer { text-align: center; padding: 30px; color: #666; }
+    a { color: #e94560; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📱 QR Code Generator</h1>
+    <p class="subtitle">Free online QR code maker - No signup required</p>
+    
+    <div class="ad-space">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8581458440606037" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    
+    <div class="input-section">
+      <select id="qrType">
+        <option value="url">URL / Website</option>
+        <option value="text">Plain Text</option>
+        <option value="email">Email</option>
+        <option value="phone">Phone Number</option>
+        <option value="wifi">WiFi Network</option>
+      </select>
+      
+      <input type="text" id="qrInput" placeholder="Enter URL or text...">
+      
+      <div id="wifiFields" style="display:none;">
+        <input type="text" id="wifiSSID" placeholder="WiFi Network Name (SSID)">
+        <input type="password" id="wifiPass" placeholder="WiFi Password">
+        <select id="wifiType">
+          <option value="WPA">WPA/WPA2</option>
+          <option value="WEP">WEP</option>
+          <option value="nopass">No Password</option>
+        </select>
+      </div>
+      
+      <button onclick="generateQR()">Generate QR Code</button>
+    </div>
+    
+    <div class="qr-output" id="output" style="display:none;">
+      <div id="qrcode"></div>
+      <br>
+      <button class="download-btn" onclick="downloadQR()">Download PNG</button>
+    </div>
+    
+    <div class="ad-space">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8581458440606037" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    
+    <section style="background:#16213e;padding:30px;border-radius:12px;margin:20px 0;">
+      <h2>What is a QR Code?</h2>
+      <p style="color:#aaa;line-height:1.8;margin-top:15px;">
+        A QR (Quick Response) code is a two-dimensional barcode that can store various types of information. 
+        When scanned with a smartphone camera, it can instantly open websites, display text, connect to WiFi networks, 
+        or perform other actions. QR codes are widely used in marketing, payments, and information sharing.
+      </p>
+    </section>
+    
+    <footer>
+      <p>Made with ❤️ | <a href="https://vvonha.github.io/crypto-funding-scanner/">More Free Tools</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    const typeSelect = document.getElementById('qrType');
+    const wifiFields = document.getElementById('wifiFields');
+    const mainInput = document.getElementById('qrInput');
+    
+    typeSelect.addEventListener('change', function() {
+      wifiFields.style.display = this.value === 'wifi' ? 'block' : 'none';
+      mainInput.style.display = this.value === 'wifi' ? 'none' : 'block';
+      
+      const placeholders = {
+        url: 'Enter URL (e.g., https://example.com)',
+        text: 'Enter any text',
+        email: 'Enter email address',
+        phone: 'Enter phone number'
+      };
+      mainInput.placeholder = placeholders[this.value] || 'Enter text...';
+    });
+    
+    function generateQR() {
+      const type = typeSelect.value;
+      let data = '';
+      
+      if (type === 'wifi') {
+        const ssid = document.getElementById('wifiSSID').value;
+        const pass = document.getElementById('wifiPass').value;
+        const wType = document.getElementById('wifiType').value;
+        data = `WIFI:T:${wType};S:${ssid};P:${pass};;`;
+      } else if (type === 'email') {
+        data = `mailto:${mainInput.value}`;
+      } else if (type === 'phone') {
+        data = `tel:${mainInput.value}`;
+      } else {
+        data = mainInput.value;
+      }
+      
+      if (!data || data === 'mailto:' || data === 'tel:') {
+        alert('Please enter some content');
+        return;
+      }
+      
+      const qr = qrcode(0, 'M');
+      qr.addData(data);
+      qr.make();
+      
+      document.getElementById('qrcode').innerHTML = qr.createImgTag(6);
+      document.getElementById('output').style.display = 'block';
+    }
+    
+    function downloadQR() {
+      const img = document.querySelector('#qrcode img');
+      if (img) {
+        const link = document.createElement('a');
+        link.download = 'qrcode.png';
+        link.href = img.src;
+        link.click();
+      }
+    }
+  </script>
+</body>
+</html>
